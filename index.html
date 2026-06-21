@@ -1,253 +1,225 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Ultra Minecraft Server</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minecraft Server</title>
 
 <style>
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family: Arial, sans-serif;
+  font-family:Arial;
 }
 
 body{
-  overflow-x:hidden;
   color:white;
-  background:#05060a;
+  overflow-x:hidden;
 }
 
-/* 🌌 Background */
-.bg{
+/* 🎥 VIDEO BACKGROUND */
+video{
+  position:fixed;
+  right:0;
+  bottom:0;
+  min-width:100%;
+  min-height:100%;
+  z-index:-3;
+  object-fit:cover;
+  filter:brightness(0.35) blur(1px);
+}
+
+/* DARK OVERLAY */
+.overlay{
   position:fixed;
   width:100%;
   height:100%;
-  background: radial-gradient(circle at top,#1b2a4a,#05060a);
-  z-index:-3;
-}
-
-.glow{
-  position:fixed;
-  width:600px;
-  height:600px;
-  background:#4ade80;
-  filter:blur(200px);
-  opacity:0.2;
-  top:-200px;
-  left:-200px;
+  background:radial-gradient(circle, rgba(0,0,0,0.3), rgba(0,0,0,0.85));
   z-index:-2;
 }
 
-/* ✨ Particles */
-.particle{
-  position:absolute;
-  width:4px;
-  height:4px;
-  background:white;
-  border-radius:50%;
-  opacity:0.4;
-  animation: float 10s linear infinite;
+/* NAV */
+nav{
+  display:flex;
+  justify-content:space-between;
+  padding:15px 25px;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(10px);
+  position:sticky;
+  top:0;
+  z-index:10;
 }
 
-@keyframes float{
-  from{transform:translateY(100vh);}
-  to{transform:translateY(-10vh);}
+nav a{
+  margin:0 10px;
+  cursor:pointer;
+  color:white;
+  opacity:0.7;
+}
+
+nav a:hover{
+  opacity:1;
+  color:#4ade80;
 }
 
 /* HERO */
 .hero{
   text-align:center;
-  padding:120px 20px 60px;
+  padding:90px 20px;
 }
 
 h1{
-  font-size:60px;
+  font-size:55px;
   color:#4ade80;
   text-shadow:0 0 20px #4ade80;
 }
 
-.sub{
-  opacity:0.7;
-  margin-top:10px;
-}
-
-/* STATUS */
-.status{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  margin-top:20px;
-  padding:10px 18px;
-  border-radius:20px;
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(10px);
-}
-
-.dot{
-  width:10px;
-  height:10px;
-  background:#4ade80;
-  border-radius:50%;
-  box-shadow:0 0 10px #4ade80;
-  animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.4);}
-  100%{transform:scale(1);}
-}
-
 /* IP BOX */
 .ip{
-  margin-top:25px;
   display:inline-block;
-  padding:15px 25px;
-  border-radius:12px;
+  margin-top:20px;
+  padding:12px 18px;
   background:rgba(255,255,255,0.08);
-  border:1px solid rgba(255,255,255,0.2);
+  border-radius:12px;
   cursor:pointer;
   transition:0.3s;
 }
 
 .ip:hover{
   transform:scale(1.05);
-  box-shadow:0 0 20px rgba(74,222,128,0.5);
+  box-shadow:0 0 20px #4ade80;
 }
 
-/* GRID */
+/* STATUS BOX */
+.status{
+  margin-top:25px;
+  display:inline-block;
+  padding:15px 20px;
+  background:rgba(255,255,255,0.08);
+  border-radius:12px;
+  backdrop-filter:blur(10px);
+}
+
+.online{
+  color:#4ade80;
+  font-weight:bold;
+}
+
+.offline{
+  color:#ff4d4d;
+  font-weight:bold;
+}
+
+/* CARDS */
 .container{
-  max-width:1100px;
+  max-width:900px;
   margin:auto;
-  padding:40px 20px;
+  padding:20px;
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   gap:20px;
 }
 
 .card{
+  background:rgba(255,255,255,0.06);
   padding:20px;
   border-radius:15px;
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.1);
-  backdrop-filter:blur(15px);
-  transition:0.4s;
+  backdrop-filter:blur(10px);
 }
 
-.card:hover{
-  transform:translateY(-10px) rotateX(5deg);
-  box-shadow:0 0 30px rgba(74,222,128,0.2);
-}
-
-h2{
-  color:#60a5fa;
-  margin-bottom:10px;
-}
-
-.btn{
-  margin-top:15px;
-  padding:12px 18px;
-  border:none;
-  border-radius:10px;
-  background:linear-gradient(90deg,#4ade80,#22c55e);
-  cursor:pointer;
-  font-weight:bold;
-  transition:0.3s;
-}
-
-.btn:hover{
-  transform:scale(1.1);
-}
-
-/* fade in scroll */
-.fade{
-  opacity:0;
-  transform:translateY(30px);
-  transition:1s;
-}
-
-.show{
-  opacity:1;
-  transform:translateY(0);
-}
 </style>
 </head>
 
 <body>
 
-<div class="bg"></div>
-<div class="glow"></div>
-<div id="particles"></div>
+<!-- 🎥 VIDEO (ersetzen!) -->
+<video autoplay muted loop>
+  <source src="https://cdn.coverr.co/videos/coverr-minecraft-style-landscape-1579/1080p.mp4" type="video/mp4">
+</video>
 
-<div class="hero">
-  <h1>⛏ ULTRA MINECRAFT</h1>
-  <div class="sub">Der Server mit den krassesten Features</div>
+<div class="overlay"></div>
 
-  <div class="status">
-    <div class="dot"></div>
-    ONLINE
+<nav>
+  <div><b>⛏ MC SERVER</b></div>
+  <div>
+    <a onclick="show('home')">Home</a>
+    <a onclick="show('rules')">Regeln</a>
   </div>
+</nav>
 
-  <!-- IP -->
-  <div class="ip" onclick="copyIP()">
-    📡 IP: <span id="ip">dein.server.ip</span>
+<!-- HOME -->
+<div id="home">
+  <div class="hero">
+    <h1>⛏ Minecraft Server</h1>
+    <p>Der beste Server für dein Abenteuer</p>
+
+    <div class="ip" onclick="copyIP()">
+      📡 IP: <span id="ip">dein.server.ip</span>
+    </div>
+
+    <!-- LIVE STATUS -->
+    <div class="status" id="statusBox">
+      Status: <span id="status">Lade...</span><br>
+      Spieler: <span id="players">?</span>
+    </div>
   </div>
 </div>
 
-<div class="container">
-
-  <div class="card fade">
-    <h2>📜 Regeln</h2>
-    <p>- Kein Cheating<br>- Kein Griefing<br>- Respekt<br>- Kein Spam</p>
+<!-- RULES -->
+<div id="rules" style="display:none">
+  <div class="hero">
+    <h1>📜 Regeln</h1>
   </div>
 
-  <div class="card fade">
-    <h2>⚡ Features</h2>
-    <p>- Custom Plugins<br>- Events<br>- Rang-System<br>- Economy</p>
+  <div class="container">
+    <div class="card">❌ Kein Cheating</div>
+    <div class="card">❌ Kein Griefing</div>
+    <div class="card">❌ Kein Spam</div>
+    <div class="card">✔ Respekt</div>
   </div>
-
-  <div class="card fade">
-    <h2>🎮 Join Now</h2>
-    <button class="btn" onclick="alert('Du bist bereit! 🚀')">
-      Server beitreten
-    </button>
-  </div>
-
 </div>
 
 <script>
-// IP copy
+// PAGE SWITCH
+function show(page){
+  document.getElementById("home").style.display = page==="home"?"block":"none";
+  document.getElementById("rules").style.display = page==="rules"?"block":"none";
+}
+
+// COPY IP
 function copyIP(){
   const ip = document.getElementById("ip").innerText;
   navigator.clipboard.writeText(ip);
   alert("IP kopiert: " + ip);
 }
 
-// particles
-const container = document.getElementById("particles");
+// 🌐 LIVE MINECRAFT SERVER STATUS
+const serverIP = "dein.server.ip"; // HIER EINTRAGEN
 
-for(let i=0;i<60;i++){
-  let p = document.createElement("div");
-  p.classList.add("particle");
-  p.style.left = Math.random()*100+"vw";
-  p.style.animationDuration = (5+Math.random()*10)+"s";
-  p.style.opacity = Math.random();
-  container.appendChild(p);
+async function loadStatus(){
+  try{
+    const res = await fetch(`https://api.mcsrvstat.us/2/${serverIP}`);
+    const data = await res.json();
+
+    if(data.online){
+      document.getElementById("status").innerHTML = "ONLINE";
+      document.getElementById("status").className = "online";
+      document.getElementById("players").innerHTML =
+        data.players.online + " / " + data.players.max;
+    } else {
+      document.getElementById("status").innerHTML = "OFFLINE";
+      document.getElementById("status").className = "offline";
+      document.getElementById("players").innerHTML = "0";
+    }
+
+  } catch(e){
+    document.getElementById("status").innerHTML = "Fehler";
+  }
 }
 
-// scroll animation
-const f = document.querySelectorAll(".fade");
-
-window.addEventListener("scroll",()=>{
-  f.forEach(el=>{
-    const top = el.getBoundingClientRect().top;
-    if(top < window.innerHeight - 100){
-      el.classList.add("show");
-    }
-  });
-});
+loadStatus();
+setInterval(loadStatus, 10000);
 </script>
 
 </body>
